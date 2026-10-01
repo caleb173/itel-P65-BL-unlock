@@ -403,7 +403,7 @@ With the bootloader unlocked, rooting with Magisk is straightforward. The P671L 
 2. Install Magisk on the phone: `adb install magisk.apk`
 3. Push init_boot.img to the phone:
    ```bash
-   adb push ~/Music/itel-P671L-16/outdir/init_boot.img /sdcard/
+   adb push ~/path/to/init_boot.img /sdcard/
    ```
 4. Open Magisk app > Install > Select and Patch a File > choose `init_boot.img`
 5. Pull the patched image back to PC:
@@ -430,7 +430,7 @@ With the bootloader unlocked, rooting with Magisk is straightforward. The P671L 
 
 ```bash
 adb reboot bootloader
-fastboot flash init_boot ~/Music/itel-P671L-16/outdir/init_boot.img
+fastboot flash init_boot ~/path/to/init_boot.img
 fastboot reboot
 ```
 
