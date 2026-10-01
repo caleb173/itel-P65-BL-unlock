@@ -463,10 +463,10 @@ sudo ./spd_dump --wait 300 \
   fdl fdl1-dl.bin 0x65000800 \
   fdl fdl2-dl.bin 0x9efffe00 \
   exec \
-  w splloader ~/Music/itel-P671L-16/outdir/u-boot-spl-16k-ufs-sign.bin \
-  w uboot ~/Music/itel-P671L-16/outdir/lk-fdl2-sign.bin \
-  w boot ~/Music/itel-P671L-16/outdir/boot.img \
-  w init_boot ~/Music/itel-P671L-16/outdir/init_boot.img \
+  w splloader ~/path/to/u-boot-spl-16k-ufs-sign.bin \
+  w uboot ~/path/to/lk-fdl2-sign.bin \
+  w boot ~/path/to/boot.img \
+  w init_boot ~/path/to/init_boot.img \
   reset
 ```
 
@@ -483,13 +483,6 @@ sudo ./spd_dump --wait 300 \
 - ⚠ exec_addr for P671L is `0x65015f08`, NOT `0x65015f48` (which is the S23 value).
 - ⚠ FDL1 address is `0x65000800`, NOT `0x65000000` (causes timeout).
 
-## 10. Conclusion
-
-The itel P65 (P671L) bootloader was successfully unlocked using CVE-2022-38694, despite the device not being officially listed in the exploit's support matrix. The key insight is that the UMS9230 universal UFS entry in the exploit's device list covers this chipset.
-
-The process took considerable research and trial-and-error, particularly around identifying the correct FDL files, finding the right exec_addr (`0x65015f08` vs `0x65015f48`), and the correct FDL1 load address (`0x65000800` vs `0x65000000`). These device-specific parameters are now documented here for anyone with the same device.
-
-Once unlocked, the device supports Magisk rooting, custom GSI flashing via fastboot or DSU, and full BROM-based recovery — making it a fully open device for further experimentation.
 
 
 Guide by Caleb | April 2026 | itel P65 (P671L) CVE-2022-38694 Bootloader Unlock
