@@ -174,7 +174,7 @@ BROM (Boot ROM) mode is the lowest-level mode of the Unisoc chipset. It cannot b
 
 > 💡 If it fails, unplug USB, wait 10 seconds, and try again. BROM is always accessible.
 
-## 5. Challenges Faced & How We Overcame Them
+## 5. Challenges Faced
 
 ### Challenge 1 — `fastboot oem unlock` Simply Doesn't Work
 
