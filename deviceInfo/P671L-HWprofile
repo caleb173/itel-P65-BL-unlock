@@ -1,0 +1,347 @@
+# itel P65 (P671L) — Complete Hardware Profile
+**Document Version:** 1.0 | **Date:** 2026-05-13 | **Status:** Confirmed from device
+
+---
+
+## 1. Device Identity
+
+| Field | Value |
+|-------|-------|
+| Commercial Name | itel P65 |
+| Model Number | P671L |
+| Build Fingerprint | P671L-SK677ABCDGHJKAaAbAcAe-U-OP-260112V2552 |
+| Android Version | 14 (HiOS) |
+| Build Date | January 12, 2026 |
+| Security Patch | 2026-02-01 |
+| DT Compatible String | sprd,ums9230 |
+| Active Slot | A |
+
+---
+
+## 2. SoC
+
+| Field | Value |
+|-------|-------|
+| SoC | Unisoc UMS9230 (T615) |
+| Silicon Revision | 1H10 |
+| Process Node | 12nm |
+| Architecture | ARM64 |
+| CPU | 8x Cortex-A55, single cluster |
+| CPU MPIDR | 0x000, 0x100, 0x200, 0x300, 0x400, 0x500, 0x600, 0x700 |
+| CPU Frequency Range | 614 – 1612 MHz (symmetric, all cores identical) |
+| Scheduler | schedutil (stock default), EAS-aware |
+| Kernel Version | Linux 5.15.180 |
+| Kernel Compiler | Android clang 14.0.7 (r450784e) |
+| PSCI Version | arm,psci-0.2 |
+| KVM | Present (EL2 mode) |
+| CPU Idle | big_core-pd, lit_core-pd (cosmetic naming, single cluster) |
+
+---
+
+## 3. Memory
+
+| Field | Value |
+|-------|-------|
+| RAM | 4GB LPDDR5 |
+| RAM Manufacturer | Hynix |
+| RAM Die IDs | H28S8D301DMR, H28S9Q301CMR |
+| RAM Base Address | 0x80000000 |
+| RAM Size | 0xFFFFF000 (4GB − 4KB) |
+| Storage | 128GB YMTC C2G072 UFS 2.2 |
+| Storage Partition | /dev/block/sda (UFS) |
+| UFS HPB | Supported (CONFIG_SCSI_UFS_HPB=y) |
+| UFS Crypto | Supported (CONFIG_SCSI_UFS_CRYPTO=y) |
+| Swap | zRAM (lzo-rle default compression) |
+
+---
+
+## 4. Display
+
+| Field | Value |
+|-------|-------|
+| Size | 6.67" |
+| Resolution | 720 × 1600 (HD+) |
+| Panel Driver IC | Synaptics TD4160 |
+| Panel Variant (Active) | TXD INX (lcd_td4160_hdp_dsi_vdo_txd_inx_p671l) |
+| Panel Variant (Alt) | LCE HKC (lcd_td4160_hdp_dsi_vdo_lce_hkc_p671l) |
+| Interface | MIPI DSI |
+| Refresh Rates | 60Hz / 90Hz / 120Hz (all exposed to Android framework) |
+| DPHY Clock (60Hz) | dphy-250m |
+| DPHY Clock (90/120Hz) | dphy-333m3 |
+| DRM Driver | sprd_drm (kernel module, 4941 symbols) |
+| Display Cutout | Punch-hole, top center, 48dp wide × 40dp tall |
+| Cutout SVG Path | M -24,0 L -24,40 L 24,40 L 24,0 Z @dp |
+| Brightness Default | 0.388 (38%) |
+| Backlight Node | sprd_backlight |
+| ESD Monitoring | Enabled (sprd,esd-check-enable/mode/period/register/value) |
+| DPI | 320 DPI (261×262 physical) |
+| Display Manufacturer PnP | GGL (Google placeholder — software quirk) |
+| Display Model ID | 0x401cec6a7a2b7b |
+| HWC Version | android.hardware.graphics.composer@2.4 |
+| Widevine | L1 confirmed |
+
+### LCD DT Node Properties (TXD INX)
+- display-timings, sprd,phy-bit-clock, sprd,phy-escape-clock
+- sprd,dsi-lane-number, sprd,dsi-work-mode, sprd,dsi-color-format
+- sprd,initial-command, sprd,sleep-in-command, sprd,sleep-out-command
+- sprd,reset-on-sequence, sprd,reset-off-sequence
+- sprd,esd-check-enable, sprd,esd-check-mode, sprd,esd-check-period
+- sprd,esd-check-register, sprd,esd-check-value
+- sprd,width-mm, sprd,height-mm
+- sprd,hporch-lp-disable, sprd,video-lp-cmd-enable
+
+---
+
+## 5. GPU
+
+| Field | Value |
+|-------|-------|
+| GPU | ARM Mali-G57 MC1 (Valhall architecture) |
+| Stock Driver | mali_kbase (17,526 symbols — proprietary blob) |
+| Mainline Driver | panfrost (compatible, not active in stock) |
+| ARMNN Backend | GPU (android.hardware.neuralnetworks@aidl-service-armnn-gpu) |
+
+---
+
+## 6. Connectivity
+
+### WiFi / Bluetooth
+| Field | Value |
+|-------|-------|
+| Combo Chip | Unisoc UMW2652 (codenamed "Merlion") |
+| Kernel Module | sprd_wlan_combo (4,565 symbols), unisoc_wcn_bsp (4,523 symbols) |
+| Firmware Partition | /dev/block/by-name/wcnmodem (UFS path) |
+| Firmware Fallback | /vendor/firmware/ |
+| Power Rails | dcxo1v8-supply, vddwcn-supply, vddwifipa-supply |
+| Enable GPIO | merlion-chip-en-gpios |
+| Reset GPIO | merlion-rst-gpios |
+| IPC | SIPC (sprd,wcn-sipc-ver) |
+| BT HAL | android.hardware.bluetooth@1.1 |
+
+### Cellular
+| Field | Value |
+|-------|-------|
+| SIM Slots | 2 (dual SIM confirmed) |
+| Modem Nodes | modem@0, modem@1 |
+| Default Data SIM | Slot 2 |
+| IPC Stack | SIPC (sipc_core, sipx, spipe, spool, sblock_bridge, sbuf_bridge) |
+| VoLTE | Uncertain |
+
+### GPS / GNSS
+| Field | Value |
+|-------|-------|
+| GNSS Chip | Unisoc GNSS (UMW2652 integrated) |
+| DT Node | gnss_common_ctl, cpwcn-gnss |
+| Kernel Modules | unisoc_gnss_common_ctl_all, unisoc_gnss_dbg, unisoc_gnss_pmnotify_ctl |
+| Driver | Proprietary blob required |
+
+### USB
+| Field | Value |
+|-------|-------|
+| USB Controller | MUSB (musb_hdrc, musb_sprd) |
+| USB Version | USB 2.0 OTG |
+| Type-C | SC27XX TypeC, TCPM stack |
+| Charging | SC8950 charger IC |
+
+---
+
+## 7. Audio
+
+| Field | Value |
+|-------|-------|
+| Codec | SC2730 |
+| ALSA Card | sprdphone-sc2730 |
+| PCM Devices | 27 |
+| VBC Version | snd_soc_sprd_vbc_v4 (3,360 symbols) |
+| PA | UCP1301, FS1599, AW87XXX |
+| HAL | Standard AOSP 7.1 |
+| Audio DSP | AGDSP (audiodsp-mem@88f00000) |
+| FM Radio | sprd_fm (standard broadcastradio HAL) |
+
+---
+
+## 8. Sensors
+
+All sensors have mainline Linux IIO drivers — no blobs required.
+
+| Sensor | Chip | Driver |
+|--------|------|--------|
+| Accelerometer + Gyroscope | LSM6DS | Mainline IIO |
+| Magnetometer | MC5603 | Mainline |
+| Ambient Light + Proximity | STK3335 | Mainline |
+| Time of Flight | VL53L0X | Mainline IIO |
+| Sensorhub | Unisoc SHUB | sprd_sensor_hub (module) |
+
+---
+
+## 9. Camera
+
+| Field | Value |
+|-------|-------|
+| HAL | sprd_camera (14,235 symbols — fully proprietary) |
+| ISP | Unisoc ISP |
+| Priority | Lowest — port last |
+
+---
+
+## 10. Fingerprint
+
+| Field | Value |
+|-------|-------|
+| Modules Loaded | silead_fp, goodix_fp, fpc_fp, fpsensor_fp, microarray_fp |
+| Active Unit | Silead (confirmed for this device) |
+| DT Node @0 | Transsion-proprietary (transsion-irq, transsion-rst) |
+| DT Node @1 | Standard (fpint-gpios, fpreset-gpios) — use this for Halium |
+| Strategy | Runtime probe — all five drivers load, one binds |
+
+---
+
+## 11. Power Management
+
+| Field | Value |
+|-------|-------|
+| PMIC | SC2730 |
+| Regulator | sc2730_regulator |
+| Battery Capacity | 5000 mAh |
+| Fuel Gauge | sc27xx_fuel_gauge |
+| Charger IC | SC8950 |
+| Wireless Charger | SY65153 (present) |
+| Thermal Zones | 18 total |
+| CPU Thermal | cputop0-tzone0, cputop1-thmzone |
+| GPU Thermal | gpu-thmzone |
+| PMIC Thermal | ank0–ank5 (SC2730 analog sensors) |
+| Modem Thermal | prometheus6-thmzone, prometheus7-thmzone |
+| Charging Thermal | chg-thmzone, battery, pa-thmzone |
+| Watchdog | SPRD FIQ watchdog (sprd_wdt_fiq) |
+| CPU Idle Governor | TEO + Menu |
+| DVFS | tran_turbo (Transsion), sprd_cpufreq_v2, apsys_dvfs, mmdvfs |
+
+---
+
+## 12. Security
+
+| Field | Value |
+|-------|-------|
+| Bootloader State | UNLOCKED (CVE-2022-38694, 2026-04-25) |
+| Verified Boot | Orange state — permanent, RPMB hardware-enforced |
+| Anti-Rollback | ACTIVE (ro.boot.anti_rollback_status=1) |
+| TrustZone | Trusty TEE (trusty, trusty_ipc, trusty_log, trusty_pm, trusty_tui, trusty_virtio) |
+| Widevine | L1 |
+| RPMB | Present, used for rollback index and key storage |
+| SELinux | Enforcing |
+| ARM Features | MTE (ARMv8.5), BTI, PAC (pointer auth), CFI (Clang) |
+| Crypto HW | AES-CE, SHA2-CE, PMULL, ChaCha20, Poly1305 (all ARM CE) |
+| FBE | File-based encryption active |
+| Fastboot | Non-functional for partition flashing — use BROM/spd_dump |
+
+---
+
+## 13. Kernel Modules (Selected)
+
+| Module | Symbols | Notes |
+|--------|---------|-------|
+| mali_kbase | 17,526 | Proprietary GPU blob |
+| cfg80211 | 17,046 | WiFi stack |
+| sprd_camera | 14,235 | Proprietary camera |
+| sprd_drm | 4,941 | Display driver — modular, port-ready |
+| sprd_wlan_combo | 4,565 | WiFi driver |
+| unisoc_wcn_bsp | 4,523 | WCN firmware loader |
+| snd_soc_sprd_vbc_v4 | 3,360 | Audio VBC |
+| tran_turbo | 2,761 | Transsion DVFS governor |
+| musb_hdrc | 2,612 | USB controller |
+| unisoc_sched | 2,258 | Unisoc scheduler extension |
+| sprd_gsp | 2,232 | Graphics scaler |
+| ums9230_clk | 2,134 | Clock driver |
+| mmdvfs | 1,891 | MM DVFS |
+| apsys_dvfs | 1,828 | AP system DVFS |
+| chipone_icnl99xx | 1,793 | Touchscreen (alt panel) |
+| zram | 1,586 | Compressed swap |
+| omnivision_td4160 | 1,546 | Touchscreen (active) |
+| sipc_core | 1,241 | Modem IPC |
+| ufs_sprd | 1,221 | UFS driver |
+
+---
+
+## 14. Reserved Memory Map
+
+**All addresses must be replicated exactly in Halium device tree.**
+
+| Region | Address | Purpose |
+|--------|---------|---------|
+| ddrbist-mem | 0x80000000 | DDR BIST test |
+| pdbg-mem | 0x80002000 | Platform debug |
+| protected-mem | 0x80003000 | Protected video |
+| sp_ddr-mem | 0x88000000 | SP DDR region |
+| wcn-mem | 0x87000000 | WiFi/BT firmware |
+| audiodsp-mem | 0x88F00000 | Audio DSP |
+| cp-mem | 0x89600000 | Modem CP |
+| audio-mem | 0x94100000 | Audio shared |
+| cma_share_1 | 0x9F000000 | Shared CMA pool |
+| logobuffer | 0x9E000000 | Boot logo FB |
+| sml-mem | 0xB0000000 | Secure monitor (TZ SML) |
+| tos-mem | 0xB0040000 | Trusted OS |
+| sh-mem | 0xB6000000 | Sensorhub shared |
+| oemcrypto | 0xB6100000 | OEMCrypto secure |
+| tkv-mem | 0xB7200000 | TKV RAM mirror |
+| widevine | 0xDE800000 | Widevine secure heap |
+| faceid-mem | 0xFFA70000 | Face ID secure |
+| rebootescrow | 0xFFF70000 | Reboot reason |
+| ramoops | 0xFFF80000 | Kernel panic log |
+| sipc-mem | 0x8E000000 | SIPC IPC shared |
+
+---
+
+## 15. SoC Clock Controllers
+
+| Controller | Address | Function |
+|------------|---------|----------|
+| AP Clock | 0x20010000 | AP subsystem clocks |
+| AON Clock | 0x300100000 | Always-on clocks |
+| MM Clock | 0x64012000 | Multimedia clocks |
+| GIC | 0x10000000 | Interrupt controller |
+
+---
+
+## 16. Partition Table (Selected)
+
+| Partition | Size | Notes |
+|-----------|------|-------|
+| prodnv | 64MB | Production NV data — backed up |
+| tranfs | 300MB | Transsion persistent storage — backed up |
+| tkv_a/b | 1MB each | TKV key-value store — backed up |
+| persist | 2MB | Persistent data — backed up |
+| miscdata | 1MB | Misc data — backed up |
+| wcnmodem | — | WCN firmware (loaded directly by driver) |
+| boot_a | — | Boot image (v4 format) |
+| init_boot_a | — | Init ramdisk (Magisk installed here) |
+| vendor_boot_a | — | Vendor ramdisk |
+| dtbo_a | — | Device tree overlays |
+| super | — | Dynamic partitions (system, vendor, product, odm) |
+| vbmeta_a | — | AVB verification metadata |
+
+---
+
+## 17. Hardware Port Readiness
+
+| Component | Readiness | Notes |
+|-----------|-----------|-------|
+| CPU | Excellent | Cortex-A55, mainline supported |
+| GPU | Excellent | Mali-G57 Valhall, panfrost mainline |
+| Display | Good | Full timing extracted, two panel variants |
+| Accelerometer/Gyro | Excellent | LSM6DS mainline IIO |
+| Magnetometer | Good | MC5603 mainline |
+| Light/Proximity | Good | STK3335 mainline |
+| ToF | Good | VL53L0X mainline IIO |
+| Audio | Good | Standard ASoC, ALSA |
+| Bluetooth | Good | Standard HAL 1.1 |
+| FM Radio | Good | Standard broadcastradio HAL |
+| GPS | Moderate | Proprietary blob needed |
+| WiFi | Moderate | Unisoc WCN blob needed |
+| Fingerprint | Moderate | Blob needed, target DT node@1 |
+| Modem/Calls | Moderate | Full SIPC stack present, VoLTE uncertain |
+| Camera | Low | Last priority — 14k symbol proprietary blob |
+| USB | Good | MUSB standard |
+
+---
+
+*All data confirmed from live device. Last updated: 2026-05-12.*
